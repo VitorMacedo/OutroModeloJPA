@@ -8,6 +8,8 @@ package br.com.vitorgomes.junit;
 import br.com.vitorgomes.jpa.EntityManagerUtil;
 import br.com.vitorgomes.modelo.Estado;
 import br.com.vitorgomes.modelo.Pais;
+import br.com.vitorgomes.modelo.PessoaFisica;
+import java.util.Calendar;
 import javax.persistence.EntityManager;
 import junit.framework.Assert;
 import org.junit.After;
@@ -19,10 +21,10 @@ import static org.junit.Assert.*;
  *
  * @author Vitor
  */
-public class TestePersistirEstado {
+public class TestePersistirPessoaFisica {
     EntityManager em;
     
-    public TestePersistirEstado() {
+    public TestePersistirPessoaFisica() {
     }
     
     @Before
@@ -39,12 +41,17 @@ public class TestePersistirEstado {
     public void teste() {
         boolean exception = false;
         try{
-            Estado e = new Estado();
-            e.setNome("Rio de Janeiro");
-            e.setUf("RJ");
-            e.setPais(em.find(Pais.class, 1));
+            PessoaFisica pf = new PessoaFisica();
+            pf.setCpf("185.195.260-80");
+            pf.setEmail("mateus@gmail.com");
+            pf.setNascimento(Calendar.getInstance());
+            pf.setNome("Mateus Jorge");
+            pf.setNomeUsuario("mateusjorge");
+            pf.setRg("452635587");
+            pf.setSenha("usuario");
+            pf.setTelefone("(21)3258455");
             em.getTransaction().begin();
-            em.persist(e);
+            em.persist(pf);
             em.getTransaction().commit();
         }catch(Exception e) {
             exception = true;
