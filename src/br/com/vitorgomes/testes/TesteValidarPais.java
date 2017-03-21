@@ -5,6 +5,7 @@
  */
 package br.com.vitorgomes.testes;
 
+import br.com.vitorgomes.jpa.EntityManagerUtil;
 import br.com.vitorgomes.modelo.Pais;
 import java.util.Set;
 import javax.persistence.EntityManager;
@@ -26,11 +27,10 @@ public class TesteValidarPais {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("OutroModeloPU");
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = EntityManagerUtil.getEntityManager();
         Pais p = new Pais();
-        p.setNome("Uruguai");
-        p.setIso("URU");
+        p.setNome("Chile");
+        p.setIso("CHI");
         em.getTransaction().begin();
         Validator validador = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<Pais>> erros = validador.validate(p);
@@ -43,7 +43,7 @@ public class TesteValidarPais {
         }
         em.getTransaction().commit();
         em.close();
-        emf.close();
+        
     }
     
 }
