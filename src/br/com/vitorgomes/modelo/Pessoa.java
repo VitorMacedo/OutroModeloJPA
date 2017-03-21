@@ -6,17 +6,23 @@
 package br.com.vitorgomes.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import static org.apache.commons.collections.CollectionUtils.index;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -47,8 +53,19 @@ public class Pessoa implements Serializable {
     @NotNull(message = "O telefone não pode ser nulo")
     @Column(name = "telefone", nullable = false, length = 14)
     private String telefone;
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Endereco> enderecos = new ArrayList<>();
 
     public Pessoa() {
+    }
+    
+    public void adicionarEndereco(Endereco obj) {
+        obj.setPessoa(this);
+        this.enderecos.add(obj);
+    }
+    
+    public void removerEndereco(int index) {
+        this.enderecos.remove(index);
     }
 
     /**
@@ -127,6 +144,20 @@ public class Pessoa implements Serializable {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the enderecos
+     */
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    /**
+     * @param enderecos the enderecos to set
+     */
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
     }
     
 }
